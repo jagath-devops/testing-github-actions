@@ -1,6 +1,6 @@
 variable "vpc_cidr" {
   type = string
-  default = "30.0.0.0/16"
+  default = "40.0.0.0/16"
 }
 
 terraform {
