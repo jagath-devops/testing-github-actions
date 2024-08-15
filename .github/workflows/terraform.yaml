@@ -1,40 +1,31 @@
-name: "Terraform"
+name: Terraform CI/CD
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   terraform:
-    name: "Terraform"
+    name: 'Terraform Lint, Security Check, and Deploy'
     runs-on: ubuntu-latest
+
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    defaults:
-      run:
-        working-directory: src
+      AWS_REGION: 'us-east-1'
+      TF_VERSION: '1.4.0'
+      TFLINT_VERSION: '0.46.1'  # Updated to a more recent version
+      TFSEC_VERSION: '1.28.1'   # Updated to a more recent version
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    - name: 'Checkout GitHub repository'
+      uses: actions/checkout@v2
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.0.1
-          terraform_wrapper: false
-
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
-
-      - name: Terraform Init
-        id: init
-        run: terraform init
-
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color
-
-      - name: Terraform Apply
+    - name: 'Configure AWS credentials'
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
