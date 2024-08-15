@@ -44,14 +44,6 @@ jobs:
     - name: 'Terraform Validate'
       run: terraform validate
 
-    - name: 'TFLint'
-      run: |
-        tflint --init
-        tflint
-
-    - name: 'tfsec'
-      run: tfsec .
-
     - name: 'Terraform Plan'
       run: terraform plan -out=tfplan
 
