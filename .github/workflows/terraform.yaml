@@ -29,7 +29,6 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v3
       with:
           role-to-assume: arn:aws:iam::211125585429:role/git-hub-to-aws-oicd
-          role-session-name: git-hub-to-aws-oicd
           aws-region: ${{ env.AWS_REGION }}
     
     - name: 'Set up Terraform'
